@@ -57,8 +57,18 @@ import {delimiters} from '../../common/fonts/tex/delimiters.js';
 /**
  *  The TeXFont class
  */
-export class TeXFont extends
-CommonTeXFontMixin<CHTMLCharOptions, CHTMLVariantData, CHTMLDelimiterData, CHTMLFontDataClass>(CHTMLFontData) {
+const Base = CommonTeXFontMixin
+  <CHTMLCharOptions, CHTMLVariantData, CHTMLDelimiterData, CHTMLFontDataClass>(CHTMLFontData);
+
+export class TeXFont extends Base {
+
+  /**
+   * @override
+   */
+  public static OPTIONS = {
+    ...Base.OPTIONS,
+    dynamicPrefix: Base.OPTIONS.dynamicPrefix + '/tex/dynamic'
+  };
 
   /**
    * Fonts to prefix any explicit ones

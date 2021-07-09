@@ -33,7 +33,7 @@ import {StyleList} from '../../util/StyleList.js';
 import {CommonOutputJax} from './OutputJax.js';
 import {CommonWrapperFactory} from './WrapperFactory.js';
 import {BBox} from '../../util/BBox.js';
-import {FontData, DelimiterData, CharData, CharOptions, DIRECTION, NOSTRETCH} from './FontData.js';
+import {FontData, DelimiterData, CharDataArray, CharOptions, DIRECTION, NOSTRETCH} from './FontData.js';
 
 /*****************************************************************/
 
@@ -814,7 +814,7 @@ export class CommonWrapper<
    * @param {number} n         The number of the character to look up
    * @return {CharData}        The full CharData object, with CharOptions guaranteed to be defined
    */
-  protected getVariantChar(variant: string, n: number): CharData<CC> {
+  protected getVariantChar(variant: string, n: number): CharDataArray<CC> {
     const char = this.font.getChar(variant, n) || [0, 0, 0, {unknown: true} as CC];
     if (char.length === 3) {
       (char as any)[3] = {};

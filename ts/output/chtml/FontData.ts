@@ -21,7 +21,8 @@
  * @author dpvc@mathjax.org (Davide Cervone)
  */
 
-import {CharMap, CharOptions, CharData, VariantData, DelimiterData, FontData, DIRECTION} from '../common/FontData.js';
+import {CharMap, CharOptions, CharDataArray, VariantData,
+        DelimiterData, FontData, DIRECTION} from '../common/FontData.js';
 import {Usage} from './Usage.js';
 import {StringMap} from './Wrapper.js';
 import {StyleList, StyleData} from '../../util/StyleList.js';
@@ -43,7 +44,7 @@ export interface CHTMLCharOptions extends CharOptions {
  * Shorthands for CHTML char maps and char data
  */
 export type CHTMLCharMap = CharMap<CHTMLCharOptions>;
-export type CHTMLCharData = CharData<CHTMLCharOptions>;
+export type CHTMLCharData = CharDataArray<CHTMLCharOptions>;
 
 /**
  * The extra data needed for a Variant in CHTML output
@@ -65,11 +66,13 @@ export interface CHTMLDelimiterData extends DelimiterData {
  * The CHTML FontData class
  */
 export class CHTMLFontData extends FontData<CHTMLCharOptions, CHTMLVariantData, CHTMLDelimiterData> {
+
   /**
    * Default options
    */
   public static OPTIONS = {
     ...FontData.OPTIONS,
+    dynamicPrefix: './output/chtml/fonts',
     fontURL: 'js/output/chtml/fonts/tex-woff-v2'
   };
 
@@ -160,7 +163,9 @@ export class CHTMLFontData extends FontData<CHTMLCharOptions, CHTMLVariantData, 
     super.defineChars(name, chars);
     const letter = this.variant[name].letter;
     for (const n of Object.keys(chars)) {
-      const options = CHTMLFontData.charOptions(chars, parseInt(n));
+      const i = parseInt(n);
+      if (!Array.isArray(chars[i])) continue;
+      const options = CHTMLFontData.charOptions(chars, i);
       if (options.f === undefined) {
         options.f = letter;
       }
@@ -204,7 +209,7 @@ export class CHTMLFontData extends FontData<CHTMLCharOptions, CHTMLVariantData, 
     }
     for (const [name, N] of this.charUsage.update()) {
       const variant = this.variant[name];
-      this.addCharStyles(styles, variant.letter, N, variant.chars[N]);
+      this.addCharStyles(styles, variant.letter, N, variant.chars[N] as CHTMLCharData);
     }
     return styles;
   }

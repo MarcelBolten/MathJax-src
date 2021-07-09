@@ -57,8 +57,18 @@ import {delimiters} from '../../common/fonts/tex/delimiters.js';
 /**
  *  The TeXFont class
  */
-export class TeXFont extends
-CommonTeXFontMixin<SVGCharOptions, SVGVariantData, SVGDelimiterData, SVGFontDataClass>(SVGFontData) {
+
+const Base = CommonTeXFontMixin<SVGCharOptions, SVGVariantData, SVGDelimiterData, SVGFontDataClass>(SVGFontData);
+
+export class TeXFont extends Base {
+
+  /**
+   * @override
+   */
+  public static OPTIONS = {
+    ...Base.OPTIONS,
+    dynamicPrefix: Base.OPTIONS.dynamicPrefix + '/tex/dynamic'
+  };
 
   /**
    *  The stretchy delimiter data
