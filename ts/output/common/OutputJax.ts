@@ -188,7 +188,7 @@ export abstract class CommonOutputJax<
     super(jaxOptions);
     this.factory = this.options.wrapperFactory ||
       new defaultFactory<CommonOutputJax<N, T, D, W, F, FD, FC>, W,
-    AnyWrapperClass, CharOptions, DelimiterData, FD>();
+                         AnyWrapperClass, CharOptions, DelimiterData, FD>();
     this.factory.jax = this;
     this.cssStyles = this.options.cssStyles || new CssStyles();
     this.font = font || new fontClass(fontOptions);
